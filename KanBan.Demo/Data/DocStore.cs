@@ -5,6 +5,7 @@ using System.Web;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using System.Reflection;
+using System.Configuration;
 
 namespace KanBan.Demo.Data
 {
@@ -12,7 +13,7 @@ namespace KanBan.Demo.Data
     {
         static DocStore()
         {
-            Current = new DocumentStore { ConnectionStringName = "RAVENHQ_CONNECTION_STRING" };
+            Current = new DocumentStore { Url = ConfigurationManager.AppSettings["RAVENHQ_CONNECTION_STRING"] };
             Current.Initialize();
      
             IndexCreation.CreateIndexes(Assembly.GetCallingAssembly(), Current);
