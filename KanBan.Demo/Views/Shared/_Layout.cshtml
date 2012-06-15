@@ -17,7 +17,7 @@
       Bundle.Css()
           .Add("~/Content/bootstrap.css")
           .Add("~/Content/bootstrap-responsive.css")
-          .Render("~/Content/combined_#.css"))
+          .Render("~/App_Data/combined_#.css"))
    
    @RenderSection("AdditionalStyles", false)
    
@@ -67,7 +67,7 @@
         .Add("~/Scripts/underscore.js")
         .Add("~/Scripts/jquery.signalR-0.5.1.min.js")
         .Add("~/signalr/hubs")
-        .Render("~/Scripts/core_#.js"))
+        .Render("~/App_Data/core_#.js"))
 
     @MvcHtmlString.Create(
         Bundle.JavaScript()
@@ -78,7 +78,7 @@
                 .Add("~/Scripts/ViewModels/WorkQueueModel.js")
                 .Add("~/Scripts/ViewModels/ProjectViewModel.js")
                 .Add("~/Scripts/ViewModels/ProjectListViewModel.js")
-        .Render("~/Scripts/viewModels_#.js"))
+        .Render("~/App_Data/viewModels_#.js"))
         
     @RenderSection("AdditionalScript", false)
     
