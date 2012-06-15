@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="span3">    
+        <div class="alert alert-error" data-bind="text: errorMessage, visible: showError"></div>
+        <h1>Projects</h1>
+        <form data-bind="submit: newProject().save" class="form-inline">
+            <fieldset>
+                <div class="control-group" data-bind="validationStyle: newProject().Name">
+                    <div class="controls">
+                        <input type="text" id="inputError" class="span3" data-bind="value: newProject().Name, valueUpdate: 'afterkeydown'" />
+                        <span class="help-inline" data-bind="validationMessage: newProject().Name"></span>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <ul data-bind="foreach: projects" class="nav nav-pills nav-stacked">
+            <li data-bind="css: {active: isActive}">
+                <a href="#" class="project" data-bind="click: $parent.setSelectedProject">
+                    <span data-bind="text: Name"></span>
+                    <!-- ko if: isActive -->
+                    <i data-bind="click: $parent.deleteProject" class="icon-remove icon-white pull-right"></i>
+                    <!-- /ko -->
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- ko with: selectedProject -->
+    <div class="row" data-bind="foreach: Queues">
+        <div class="span3">
+            <h1 data-bind="text: Name"></h1>
+            <form data-bind="submit: newStory().save" class="form-inline">
+                <fieldset>
+                    <div class="control-group" data-bind="validationStyle: newStory().Name">
+                        <div class="controls">
+                            <input type="text" id="inputError" class="span3" data-bind="value: newStory().Name, valueUpdate: 'afterkeydown'" />
+                            <span class="help-inline" data-bind="validationMessage: newStory().Name"></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <ul class="unstyled user-stories" data-bind="sortable: { relatedClass: 'user-stories', exclude: 'no-drag', remove: removeUserStory, recieve: addUserStory }">
+                <!-- ko if: userStories().length == 0 -->
+                <li class="no-drag">
+                    <div class="alert">No User Stories :(</div>
+                </li>
+                <!-- /ko -->
+                <!-- ko foreach: userStories -->
+                <li>                
+                    <div class="alert alert-info" data-bind="css: { 'alert-info': !Ready(), 'alert-success': Ready}, click: toggleReady">
+                        <span data-bind="text: Name"></span>
+                        <!-- ko if: Ready -->
+                        <i class="icon-ok pull-right"></i>
+                        <!-- /ko -->
+                    </div>
+                </li>
+                <!-- /ko -->
+            </ul>
+        </div>
+    </div>
+    <!-- /ko -->    
+</div>
+@section AdditionalScript{
+<script type="text/javascript">
+    $(document).ready(function () {
+        ProjectDataAccess.projectUrl = '@Url.Action("Project", "ProjectList")';
+        ProjectDataAccess.userStoriesUrl = '@Url.Action("UserStories", "ProjectList")';
+        ProjectDataAccess.userStoryUrl = '@Url.Action("UserStory", "ProjectList")';
+
+        var projectListViewModel = new ProjectListViewModel();
+
+        ko.applyBindings(projectListViewModel);
+
+        projectListViewModel.loadProjects();
+    });
+
+</script>
+}
