@@ -14,9 +14,14 @@ var ProjectListViewModel = function () {
 
     $this.selectedProject = ko.observable();
 
+    $this.userMessage = ko.observable("");
+    $this.showUserMessage = ko.computed(function () {
+        return $this.userMessage && $this.userMessage() !== "";
+    });
+
     $this.errorMessage = ko.observable("");
-    $this.showError = ko.computed(function () {
-        return $this.errorMessage() != "";
+    $this.showErrorMessage = ko.computed(function () {
+        return $this.errorMessage() && $this.errorMessage() !== "";
     });
 
     $this.newProject = ko.observable(new ProjectModel({
@@ -82,6 +87,10 @@ var ProjectListViewModel = function () {
             saved: projectSaved
         }));
     }
+
+    Messages.onSendUserMessage(function (msg) {
+        $this.userMessage(msg);
+    });
 
     Messages.onProjectCreated($this.addProject);
 

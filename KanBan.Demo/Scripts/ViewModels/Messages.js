@@ -6,29 +6,37 @@ var Messages = (function () {
 
     var messageBus = new ko.subscribable();
 
+    var projectHub = $.connection.projectHub;
+
     var eventNames = {
         projectCreated: 'projectCreated',
         projectDeleted: 'projectDeleted',
         userStoryAdded: 'userStoryAdded',
-        userStoryUpdated: 'userStoryUpdated'
+        userStoryUpdated: 'userStoryUpdated',
+        sendUserMessage: 'sendUserMessage'
     };
 
     var my = {
         onProjectCreated: createEvent(eventNames.projectCreated),
         onProjectDeleted: createEvent(eventNames.projectDeleted),
         onUserStoryAdded: createEvent(eventNames.userStoryAdded),
-        onUserStoryUpdated: createEvent(eventNames.userStoryUpdated)
+        onUserStoryUpdated: createEvent(eventNames.userStoryUpdated),
+        onSendUserMessage: createEvent(eventNames.sendUserMessage),
+        ackServer: function () {
+            projectHub.ackServer();
+        }
     };
-
-    var projectHub = $.connection.projectHub;
 
     projectHub.projectCreated = createNotifier(eventNames.projectCreated);
     projectHub.projectDeleted = createNotifier(eventNames.projectDeleted);
     projectHub.userStoryCreated = createNotifier(eventNames.userStoryAdded);
     projectHub.userStoryUpdated = createNotifier(eventNames.userStoryUpdated);
+    projectHub.sendUserMessage = createNotifier(eventNames.sendUserMessage);
 
     // Start the connection
-    $.connection.hub.start();
+    $.connection.hub.start().done(function () {
+        my.ackServer();
+    });
 
     function createEvent(eventName) {
         var e = eventName;

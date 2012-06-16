@@ -2,8 +2,13 @@
     ViewBag.Title = "Index";
 }
 <div class="row">
+    <div class="span12">
+        <div class="alert alert-info" data-bind="text: userMessage, visible: showUserMessage" style="display: none"></div>
+        <div class="alert alert-error" data-bind="text: errorMessage, visible: showErrorMessage" style="display: none"></div>
+    </div>
+</div>
+<div class="row">
     <div class="span3">    
-        <div class="alert alert-error" data-bind="text: errorMessage, visible: showError"></div>
         <h1>Projects</h1>
         <form data-bind="submit: newProject().save" class="form-inline">
             <fieldset>
@@ -27,7 +32,7 @@
         </ul>
     </div>
     <!-- ko with: selectedProject -->
-    <div class="row" data-bind="foreach: Queues">
+    <div class="row" data-bind="foreach: Queues, visible: Queues && Queues().length > 0" style="display:none">
         <div class="span3">
             <h1 data-bind="text: Name"></h1>
             <form data-bind="submit: newStory().save" class="form-inline">

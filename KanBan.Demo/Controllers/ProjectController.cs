@@ -12,6 +12,8 @@ namespace KanBan.Demo.Controllers
     {
         public ActionResult Index()
         {
+            UserTracking.TrackUserVisit(HttpContext);
+
             return View();
         }
 
