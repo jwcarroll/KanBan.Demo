@@ -18,7 +18,7 @@ namespace KanBan.Demo.Data
         {
             Current = new DocumentStore {
                 Url = GetConnectionStringPart("Url=", URL),
-                ApiKey = GetConnectionStringPart("ApiKey=", URL)
+                ApiKey = GetConnectionStringPart("ApiKey=", API_KEY)
             };
 
             Current.Initialize();
