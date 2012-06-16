@@ -79,7 +79,15 @@ var ProjectListViewModel = function () {
     };
 
     function projectSaved(project) {
-        _projects.push(project);
+        if (!project) return;
+
+        var existingProj = _.find(_projects(), function (p) {
+            return p.Id === project.Id;
+        });
+        
+        if (!existingProj) {
+            _projects.push(project);
+        }
 
         $this.errorMessage("");
 
